@@ -118,41 +118,77 @@ namespace Stack_infix_postfix
                 return postfix;
             }
 
+            public int CalculatePostfix(string str)
+            {
+
+                foreach (char c in str)
+                {
+                    if (char.IsDigit(c))
+                    {
+                        stack.Push(c - '0');  // '0' = 48 trong ASCII, nên trừ đi để lấy giá trị số
+                    }
+                    else if (IsOperator(c))
+                    {                        
+                        int val2 = (int)stack.Pop();  
+                        int val1 = (int)stack.Pop();  
+                        switch (c)
+                        {
+                            case '+':
+                                stack.Push(val1 + val2);
+                                break;
+                            case '-':
+                                stack.Push(val1 - val2);
+                                break;
+                            case '*':
+                                stack.Push(val1 * val2);
+                                break;
+                            case '/':
+                                if (val2 == 0) throw new DivideByZeroException();
+                                stack.Push(val1 / val2);
+                                break;
+                            case '^':
+                                stack.Push((int)Math.Pow(val1, val2));
+                                break;
+                        }
+                    }
+                }
+                return (int)stack.Pop();
+            }
         }
         class Program
         {
             static void Main(string[] args)
             {
                 InfixToPostfix converter = new InfixToPostfix();
+                List<string> postfixes = new List<string>();
 
-                // Test cases
                 string[] expressions = new string[]
                 {
-            "A+B*C",
-            "(A+B)*C",
-            "A+B+C",
-            "A^B^C",
-            "(A+B)*(C+D)"
+                    "2 + (3 * 4)",
+                    "5 + ((1 + 2) * 4)",
+                    "3 4 5 + *",
+                    "10 5 / 2 +",
+                    "7 8 * 4 2 / +"
                 };
 
                 foreach (string infix in expressions)
                 {
                     string postfix = converter.Convert(infix);
+                    postfixes.Add(postfix);
                     Console.WriteLine($"Infix: {infix}");
                     Console.WriteLine($"Postfix: {postfix}");
                     Console.WriteLine();
                 }
 
+                foreach (string op in postfixes)
+                {
+                    int val = converter.CalculatePostfix(op);
+                    Console.WriteLine($"The last value of {op}: {val}");
+                }
+
+                Console.ReadLine();
             }
         }
     }
 }
 
-
-
-/* 
- 
- 
- 
- 
- */
