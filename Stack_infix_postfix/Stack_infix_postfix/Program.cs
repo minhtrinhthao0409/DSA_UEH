@@ -39,21 +39,7 @@ namespace Stack_infix_postfix
                 count--;
             return data;
         }
-        public int Count()
-        {
-            int count = 0;
-            MyStack temp = new MyStack();
-            object ob = (int)Pop();
-            while (ob != null)
-            {
-                temp.Push(ob);
-                count++;
-                ob = Pop();
-            }
-            while (!temp.IsEmpty())
-                Push(temp.Pop());
-            return count;
-        }
+        
         public object Peek()
         {
             return top.data;
