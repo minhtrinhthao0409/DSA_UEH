@@ -73,8 +73,9 @@ namespace GiaiThuatTimKiem
             else
                 return -1;
         }
-
-        //BinSearch
+        //B2. Viết lại BinSearch dùng đệ quy
+        //B3. Viết lại BinSearch với phần tử mid được random có kiểm soát
+        //B4. Viết lại BinSearch với 2 phần tử làm mốc
         static int BinSearch(int[] sortedarr, int value)
         {
             int left = 0, right = sortedarr.Length - 1;
