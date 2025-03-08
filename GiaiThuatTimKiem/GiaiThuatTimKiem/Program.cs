@@ -97,7 +97,74 @@ namespace GiaiThuatTimKiem
             }
             return -1;
         }
-            static void Main(string[] args)
+        // B2. Binary Search dùng đệ quy
+        static int BinSearchRecursive(int[] sortedarr, int value, int left, int right)
+        {
+            if (left > right)
+                return -1;
+
+            int mid = (left + right) / 2;
+
+            if (sortedarr[mid] == value)
+                return mid;
+            else if (sortedarr[mid] > value)
+                return BinSearchRecursive(sortedarr, value, left, mid - 1);
+            else
+                return BinSearchRecursive(sortedarr, value, mid + 1, right);
+        }
+
+        // B3. Binary Search với mid ngẫu nhiên có kiểm soát
+        static int BinSearchRandomMid(int[] sortedarr, int value, int left, int right)
+        {
+            if (left > right)
+                return -1;
+
+            Random rand = new Random();
+            // Tạo mid ngẫu nhiên trong khoảng left và right
+            int mid = left + rand.Next(0, right - left + 1);
+
+            // Đảm bảo mid vẫn giúp chia đôi không gian tìm kiếm
+            if (sortedarr[mid] == value)
+                return mid;
+            else if (sortedarr[mid] > value)
+                return BinSearchRandomMid(sortedarr, value, left, mid - 1);
+            else
+                return BinSearchRandomMid(sortedarr, value, mid + 1, right);
+        }
+
+        // B4. Binary Search với 2 phần tử làm mốc
+        static int BinSearchTwoPivots(int[] sortedarr, int value, int left, int right)
+        {
+            if (left > right)
+                return -1;
+
+            if (right - left < 2) // Khi chỉ còn 1 hoặc 2 phần tử
+            {
+                if (sortedarr[left] == value)
+                    return left;
+                if (right > left && sortedarr[right] == value)
+                    return right;
+                return -1;
+            }
+
+            // Chia mảng thành 3 phần bằng 2 mốc
+            int segment = (right - left + 1) / 3;
+            int mid1 = left + segment;
+            int mid2 = right - segment;
+
+            if (sortedarr[mid1] == value)
+                return mid1;
+            if (sortedarr[mid2] == value)
+                return mid2;
+
+            if (value < sortedarr[mid1])
+                return BinSearchTwoPivots(sortedarr, value, left, mid1 - 1);
+            else if (value > sortedarr[mid2])
+                return BinSearchTwoPivots(sortedarr, value, mid2 + 1, right);
+            else
+                return BinSearchTwoPivots(sortedarr, value, mid1 + 1, mid2 - 1);
+        }
+        static void Main(string[] args)
         {
             Console.OutputEncoding = Encoding.UTF8;
             
