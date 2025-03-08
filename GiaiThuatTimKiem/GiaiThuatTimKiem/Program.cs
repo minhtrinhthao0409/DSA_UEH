@@ -73,6 +73,33 @@ namespace GiaiThuatTimKiem
             else
                 return -1;
         }
+
+        // Sentinel Search dùng đệ quy
+        static int SentSearchRecursive(int[] arr, int value, int index = 0)
+        {
+            if (index == 0)
+            {
+                int lastEle = arr[arr.Length - 1];
+                arr[arr.Length - 1] = value;
+
+                int result = SentSearchRecursive(arr, value, 0);
+
+                // Khôi phục giá trị cuối
+                arr[arr.Length - 1] = lastEle;
+
+                // Xử lý kết quả
+                if (result < arr.Length - 1)
+                    return result;
+                else if (lastEle == value)
+                    return arr.Length - 1;
+                else
+                    return -1;
+            }
+            if (arr[index] == value)
+                return index;
+
+            return SentSearchRecursive(arr, value, index + 1);
+        }
         //B2. Viết lại BinSearch dùng đệ quy
         //B3. Viết lại BinSearch với phần tử mid được random có kiểm soát
         //B4. Viết lại BinSearch với 2 phần tử làm mốc
