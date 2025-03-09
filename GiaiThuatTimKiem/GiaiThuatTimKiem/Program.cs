@@ -256,18 +256,19 @@ namespace GiaiThuatTimKiem
             // 4. Đo thời gian Binary Search (dùng mảng đã sắp xếp)
             Console.WriteLine(new string('-', 30));
             int[] sortedArr = (int[])arr.Clone();
-            Array.Sort(sortedArr);
-            Console.WriteLine("Các phần tử có trong mảng sau khi sắp xếp là: ");
-            foreach (int num in sortedArr)
+            int[] indexArr = new int[size]; // tạo mảng lưu các chỉ số trong mảng gốc
+            for (int i = 0; i < size; i++)
             {
-                Console.Write(num + "\t");
+
+                indexArr[i] = i;
             }
-            Console.WriteLine("\n");
+            Array.Sort(sortedArr, indexArr); // sắp xếp các số trong mảng, đồng thời sắp xếp các số trong mảng chỉ số
+            
             Console.WriteLine("Binary Search:");
             timer.startTime();
             int binResult = BinSearch(sortedArr, val);
             timer.StopTime();
-            Console.WriteLine($"Vị trí: {binResult}, Thời gian: {timer.Result().TotalMilliseconds} ms");
+            Console.WriteLine($"Vị trí: {indexArr[binResult]}, Thời gian: {timer.Result().TotalMilliseconds} ms");
 
             Console.ReadLine();
 
