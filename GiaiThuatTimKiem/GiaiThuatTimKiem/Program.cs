@@ -77,34 +77,27 @@ namespace GiaiThuatTimKiem
                 return -1;
         }
         // B1. Sentinel Search dùng đệ quy
-        static int SentSearchRecursive(int[] arr, int value, int index = 0)
+        static int SentSearchRecursive(int[] arr, int value, int index = 0, bool isInitialCall = true)
         {
-            // Lưu giá trị cuối cùng và đặt sentinel
-            if (index == 0)
+            if (isInitialCall)
             {
                 int lastEle = arr[arr.Length - 1];
                 arr[arr.Length - 1] = value;
-
-                int result = SentSearchRecursive(arr, value, 0);
-
-                // Khôi phục giá trị cuối
+                int result = SentSearchRecursive(arr, value, 0, false);
                 arr[arr.Length - 1] = lastEle;
-
-                // Xử lý kết quả
-                if (result < arr.Length - 1)
+                if (result < arr.Length - 1 || (result == arr.Length - 1 && lastEle == value))
                     return result;
-                else if (lastEle == value)
-                    return arr.Length - 1;
-                else
-                    return -1;
+                return -1;
             }
 
-            // Trường hợp đệ quy
+            if (index >= arr.Length)
+                return arr.Length - 1;
             if (arr[index] == value)
                 return index;
-
-            return SentSearchRecursive(arr, value, index + 1);
+            return SentSearchRecursive(arr, value, index + 1, false);
         }
+
+            
         //BinSearch
         static int BinSearch(int[] sortedarr, int value)
         {
@@ -204,7 +197,7 @@ namespace GiaiThuatTimKiem
             Random rnd = new Random();
             Timing timer = new Timing();
 
-            int size = rnd.Next(5, 20);
+            int size = rnd.Next(5, 10);
             int[] arr = new int[size];
 
             for (int i = 0; i < size; i++)
@@ -231,14 +224,17 @@ namespace GiaiThuatTimKiem
             timer.StopTime();
             Console.WriteLine($"Vị trí: {seqResult}, Thời gian: {timer.Result().TotalMilliseconds} ms");
 
+            Console.WriteLine();
+
             // 2.Đo thời gian Recursive Search với mảng
             int[] arr2 = (int[])arr.Clone();
-            Console.WriteLine(new string('-', 30));
+            
             Console.WriteLine("Recursive Search:");
             timer.startTime();
             int recuResult = RecuSearch(arr2, 0, val);
             timer.StopTime();
             Console.WriteLine($"Vị trí: {recuResult}, Thời gian: {timer.Result().TotalMilliseconds} ms");
+
 
             // 3.Đo thời gian Sentinel Search
             Console.WriteLine(new string('-', 30));
@@ -249,15 +245,31 @@ namespace GiaiThuatTimKiem
             timer.StopTime();
             Console.WriteLine($"Vị trí: {sentResult}, Thời gian: {timer.Result().TotalMilliseconds} ms");
 
+            Console.WriteLine();
+
+            Console.WriteLine("RecuSentinel Search:");
+            timer.startTime();
+            int recuSenResult = SentSearchRecursive(arr3, val, 0);
+            timer.StopTime();
+            Console.WriteLine($"Vị trí: {recuSenResult}, Thời gian: {timer.Result().TotalMilliseconds} ms");
+
             // 4. Đo thời gian Binary Search (dùng mảng đã sắp xếp)
             Console.WriteLine(new string('-', 30));
             int[] sortedArr = (int[])arr.Clone();
             Array.Sort(sortedArr);
+            Console.WriteLine("Các phần tử có trong mảng sau khi sắp xếp là: ");
+            foreach (int num in sortedArr)
+            {
+                Console.Write(num + "\t");
+            }
+            Console.WriteLine("\n");
             Console.WriteLine("Binary Search:");
             timer.startTime();
             int binResult = BinSearch(sortedArr, val);
             timer.StopTime();
             Console.WriteLine($"Vị trí: {binResult}, Thời gian: {timer.Result().TotalMilliseconds} ms");
+
+            Console.ReadLine();
 
         }
     }
