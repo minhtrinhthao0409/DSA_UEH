@@ -170,6 +170,7 @@ namespace GiaiThuatTimKiem
                 return -1;
             }
 
+
             // Chia mảng thành 3 phần bằng 2 mốc
             int segment = (right - left + 1) / 3;
             int mid1 = left + segment;
