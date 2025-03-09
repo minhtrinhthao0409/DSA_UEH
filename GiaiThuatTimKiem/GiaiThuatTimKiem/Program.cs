@@ -257,11 +257,13 @@ namespace GiaiThuatTimKiem
             Console.WriteLine(new string('-', 30));
             int[] sortedArr = (int[])arr.Clone();
             int[] indexArr = new int[size]; // tạo mảng lưu các chỉ số trong mảng gốc
+
             for (int i = 0; i < size; i++)
             {
 
                 indexArr[i] = i;
             }
+
             Array.Sort(sortedArr, indexArr); // sắp xếp các số trong mảng, đồng thời sắp xếp các số trong mảng chỉ số
             
             Console.WriteLine("Binary Search:");
@@ -269,6 +271,12 @@ namespace GiaiThuatTimKiem
             int binResult = BinSearch(sortedArr, val);
             timer.StopTime();
             Console.WriteLine($"Vị trí: {indexArr[binResult]}, Thời gian: {timer.Result().TotalMilliseconds} ms");
+
+            Console.WriteLine("RecuBinary Search:");
+            timer.startTime();
+            int RecuBinResult = BinSearchRecursive(sortedArr, val, 0, sortedArr.Length - 1);
+            timer.StopTime();
+            Console.WriteLine($"Vị trí: {indexArr[RecuBinResult]}, Thời gian: {timer.Result().TotalMilliseconds} ms");
 
             Console.ReadLine();
 
