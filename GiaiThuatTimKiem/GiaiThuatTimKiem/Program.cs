@@ -19,6 +19,7 @@ namespace GiaiThuatTimKiem
             }
             return i;
         }
+
         static int RecuSearch(int[] arr, int from, int value)
         {
             if (arr[from] == value)
@@ -26,6 +27,7 @@ namespace GiaiThuatTimKiem
             else
                 return RecuSearch(arr, from + 1, value);
         }
+
         static int RecuSearchList(List<int> arr, int value)
         {
             //Nên sao chép arr sang list mới để thao tác
@@ -37,6 +39,7 @@ namespace GiaiThuatTimKiem
                 return 1 + RecuSearchList(arr, value);
             }
         }
+
         static int RecuSearchArray(Array arr, int value)
         {
             if ((int)arr.GetValue(arr.GetLowerBound(0)) == value)
@@ -73,9 +76,36 @@ namespace GiaiThuatTimKiem
             else
                 return -1;
         }
-        //B2. Viết lại BinSearch dùng đệ quy
-        //B3. Viết lại BinSearch với phần tử mid được random có kiểm soát
-        //B4. Viết lại BinSearch với 2 phần tử làm mốc
+        // B1. Sentinel Search dùng đệ quy
+        static int SentSearchRecursive(int[] arr, int value, int index = 0)
+        {
+            // Lưu giá trị cuối cùng và đặt sentinel
+            if (index == 0)
+            {
+                int lastEle = arr[arr.Length - 1];
+                arr[arr.Length - 1] = value;
+
+                int result = SentSearchRecursive(arr, value, 0);
+
+                // Khôi phục giá trị cuối
+                arr[arr.Length - 1] = lastEle;
+
+                // Xử lý kết quả
+                if (result < arr.Length - 1)
+                    return result;
+                else if (lastEle == value)
+                    return arr.Length - 1;
+                else
+                    return -1;
+            }
+
+            // Trường hợp đệ quy
+            if (arr[index] == value)
+                return index;
+
+            return SentSearchRecursive(arr, value, index + 1);
+        }
+        //BinSearch
         static int BinSearch(int[] sortedarr, int value)
         {
             int left = 0, right = sortedarr.Length - 1;
@@ -164,6 +194,9 @@ namespace GiaiThuatTimKiem
             else
                 return BinSearchTwoPivots(sortedarr, value, mid1 + 1, mid2 - 1);
         }
+
+
+
         static void Main(string[] args)
         {
             Console.OutputEncoding = Encoding.UTF8;
